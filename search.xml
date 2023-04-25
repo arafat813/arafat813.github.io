@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>js设计模式-单例模式</title>
+      <link href="/posts/888898f6.html"/>
+      <url>/posts/888898f6.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="什么是单例模式"><a href="#什么是单例模式" class="headerlink" title="什么是单例模式"></a>什么是单例模式</h1><p>  单例模式（Singleton Pattern）是 Java 中最简单的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。<br>  这种模式涉及到一个单一的类，该类负责创建自己的对象，同时确保只有单个对象被创建。这个类提供了一种访问其唯一的对象的方式，可以直接访问，不需要实例化该类的对象。<br>  注意：<br>  1、单例类只能有一个实例。<br>  2、单例类必须自己创建自己的唯一实例。<br>  3、单例类必须给所有其他对象提供这一实例。</p><h1 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h1><p>  肯定是有一个变量将第一次new生成的实例对象保存了下来，后面再执行new的时候，就直接返回第一次生成的实例对象，这样就实现了单例。</p><h1 id="主要优点："><a href="#主要优点：" class="headerlink" title="主要优点："></a>主要优点：</h1><p>  1、提供了对唯一实例的受控访问。<br>  2、由于在系统内存中只存在一个对象，因此可以节约系统资源，对于一些需要频繁创建和销毁的对象单例模式无疑可以提高系统的性能。<br>  3、允许可变数目的实例。</p><h1 id="主要缺点："><a href="#主要缺点：" class="headerlink" title="主要缺点："></a>主要缺点：</h1><p>  1、由于单利模式中没有抽象层，因此单例类的扩展有很大的困难。<br>  2、单例类的职责过重，在一定程度上违背了“单一职责原则”。<br>  3、滥用单例将带来一些负面问题，如为了节省资源将数据库连接池对象设计为的单例类，可能会导致共享连接池对象的程序过多而出现连接池溢出；如果实例化的对象长时间不被利用，系统会认为是垃圾而被回收，这将导致对象状态的丢失。</p><h1 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h1><p>  在以下情况下可以考虑使用单例模式：</p><ul><li>(1) 系统只需要一个实例对象，如系统要求提供一个唯一的序列号生成器或资源管理器，或者需要考虑资源消耗太大而只允许创建一个对象。</li><li>(2) 客户调用类的单个实例只允许使用一个公共访问点，除了该公共访问点，不能通过其他途径访问该实例。</li></ul><h1 id="附代码"><a href="#附代码" class="headerlink" title="附代码"></a>附代码</h1>  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">let</span> <span class="title class_">CreateSingleton</span> = (<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">let</span> instance;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params">name</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance) &#123;</span><br><span class="line">            <span class="keyword">return</span> instance;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">        <span class="keyword">return</span> instance = <span class="variable language_">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="title class_">CreateSingleton</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">getName</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title class_">Winner</span> = <span class="keyword">new</span> <span class="title class_">CreateSingleton</span>(<span class="string">&#x27;Winner&#x27;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="title class_">Looser</span> = <span class="keyword">new</span> <span class="title class_">CreateSingleton</span>(<span class="string">&#x27;Looser&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Winner</span> === <span class="title class_">Looser</span>); <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Winner</span>.<span class="title function_">getName</span>());  <span class="comment">// &#x27;Winner&#x27;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Looser</span>.<span class="title function_">getName</span>());  <span class="comment">// &#x27;Winner&#x27;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Winner</span>) <span class="comment">// &#x27;Winner&#x27;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Looser</span>)</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 设计模式 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> JavaScript </tag>
+            
+            <tag> 设计模式 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Webpack基础教程</title>
       <link href="/posts/4db0c680.html"/>
       <url>/posts/4db0c680.html</url>
